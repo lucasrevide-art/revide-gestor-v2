@@ -1,0 +1,575 @@
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 28px 60px;
+}
+
+/* ─── Header ─── */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.refresh-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover {
+  color: var(--text);
+  border-color: #444;
+}
+
+/* ─── Greeting ─── */
+.greeting-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.greeting-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: opacity 0.2s;
+  display: block;
+  user-select: none;
+}
+
+.greeting-logo:hover { opacity: 0.85; }
+
+.greeting-text {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.greeting-date {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+/* ─── Motivational ─── */
+.motivational-card {
+  background: linear-gradient(135deg, #0f1a2e 0%, #0a0f1a 100%);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 28px;
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.motivational-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.motivational-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #c8d9f0;
+  white-space: pre-line;
+  flex: 1;
+}
+
+.motivational-refresh {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: rgba(59, 130, 246, 0.4);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.motivational-refresh:hover { color: var(--blue); }
+
+/* ─── Grid ─── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+.dashboard-col-main,
+.dashboard-col-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Section base ─── */
+.progress-section,
+.summary-section,
+.objectives-section,
+.reminders-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.section-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ─── Progress ─── */
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.progress-percent {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.progress-bar-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--blue);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.company-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.company-progress-item { display: flex; flex-direction: column; gap: 5px; }
+
+.company-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.company-dot-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.company-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.company-name-small {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+.company-progress-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.company-bar-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.company-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  opacity: 0.8;
+}
+
+/* ─── Summary ─── */
+.summary-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 14px;
+  background: #0a0a0a;
+  border-radius: var(--radius-sm);
+  padding: 12px 0;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background: var(--border);
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+}
+
+.alert-red { background: var(--red-dim); }
+.alert-yellow { background: var(--yellow-dim); }
+.alert-blue { background: var(--blue-dim); }
+
+.alert-text strong { font-weight: 600; }
+
+.no-alerts {
+  font-size: 12.5px;
+  color: var(--green);
+  padding: 8px 0;
+}
+
+/* ─── Objectives ─── */
+.objectives-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.objective-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #0d0d0d;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s;
+}
+
+.objective-item.objective-done {
+  opacity: 0.5;
+}
+
+.objective-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.objective-item.objective-done .objective-check {
+  background: var(--green-dim);
+  border-color: var(--green);
+}
+
+.objective-title {
+  flex: 1;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.objective-item.objective-done .objective-title {
+  text-decoration: line-through;
+}
+
+.objective-company {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.objective-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.objective-remove:hover { color: var(--red); }
+
+.empty-objectives {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  padding: 8px 0 4px;
+  line-height: 1.6;
+}
+
+.task-picker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  z-index: 50;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.task-picker-empty {
+  padding: 14px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.task-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+
+.task-picker-item:last-child { border-bottom: none; }
+.task-picker-item:hover { background: var(--card-hover); }
+
+.task-picker-title { flex: 1; }
+.task-picker-company { font-size: 11px; color: var(--text-muted); }
+
+/* ─── Reminders ─── */
+.reminder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: #0a0a0a;
+  border-radius: var(--radius-sm);
+}
+
+.time-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.time-opt {
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.time-opt.active {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-dim);
+}
+
+.time-opt:hover:not(.active) {
+  border-color: #444;
+  color: var(--text);
+}
+
+.reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #0d0d0d;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.reminder-item.reminder-expired {
+  border-color: var(--yellow);
+  background: var(--yellow-dim);
+}
+
+.reminder-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reminder-title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.reminder-timer {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.reminder-expired .reminder-timer {
+  color: var(--yellow);
+  font-weight: 600;
+}
+
+.reminder-dismiss {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.reminder-dismiss:hover { color: var(--text); }
+
+.empty-reminders {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+
+/* ─── Go to Gestor card ─── */
+.goto-gestor-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.goto-icon {
+  font-size: 24px;
+}
+
+.goto-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.goto-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-col-side {
+    order: -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 64px 16px 40px;
+  }
+
+  .greeting-text {
+    font-size: 22px;
+  }
+}
