@@ -7,7 +7,9 @@
       "Bash(command -v npm)",
       "Bash(find /usr /opt /Users/lucascruz -name \"npm\" -type f 2>/dev/null | head -10; find /Users/lucascruz -name \".nvm\" -type d 2>/dev/null | head -3)",
       "Bash(ls /usr/local/bin/ 2>/dev/null | head -20; ls /opt/homebrew/bin/ 2>/dev/null | grep -E \"node|npm\" | head -10; echo \"PATH=$PATH\")",
-      "Bash(brew list *)"
+      "Bash(brew list *)",
+      "Bash(/usr/local/bin/npm run *)",
+      "Bash(/usr/local/bin/npm install *)"
     ]
   }
 }
