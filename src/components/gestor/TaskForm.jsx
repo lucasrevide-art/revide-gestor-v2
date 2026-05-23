@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { WEEKDAYS } from '../../utils/helpers'
 
 const EMPTY = {
   titulo: '',
@@ -8,6 +9,9 @@ const EMPTY = {
   data_inicio: '',
   data_entrega: '',
   descricao: '',
+  recorrente: false,
+  recorrencia_tipo: 'dias_semana',
+  recorrencia_dias: [],
 }
 
 export default function TaskForm({ task, empresas, onSave, onClose }) {
@@ -24,6 +28,9 @@ export default function TaskForm({ task, empresas, onSave, onClose }) {
         data_inicio: task.data_inicio || '',
         data_entrega: task.data_entrega || '',
         descricao: task.descricao || '',
+        recorrente: !!task.recorrente,
+        recorrencia_tipo: task.recorrencia_tipo || 'dias_semana',
+        recorrencia_dias: task.recorrencia_dias || [],
       })
     } else {
       setForm(EMPTY)
@@ -34,16 +41,34 @@ export default function TaskForm({ task, empresas, onSave, onClose }) {
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
+  function toggleDia(d) {
+    setForm(prev => {
+      const has = prev.recorrencia_dias.includes(d)
+      const dias = has
+        ? prev.recorrencia_dias.filter(x => x !== d)
+        : [...prev.recorrencia_dias, d].sort((a, b) => a - b)
+      return { ...prev, recorrencia_dias: dias }
+    })
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     if (!form.titulo.trim()) return
     setSaving(true)
     await onSave({
-      ...form,
+      titulo: form.titulo,
       empresa_id: form.empresa_id || null,
+      prioridade: form.prioridade,
+      status: form.status,
       data_inicio: form.data_inicio || null,
       data_entrega: form.data_entrega || null,
       descricao: form.descricao || null,
+      recorrente: form.recorrente,
+      recorrencia_tipo: form.recorrente ? form.recorrencia_tipo : null,
+      recorrencia_dias:
+        form.recorrente && form.recorrencia_tipo === 'dias_semana'
+          ? form.recorrencia_dias
+          : null,
     })
     setSaving(false)
   }
@@ -111,7 +136,7 @@ export default function TaskForm({ task, empresas, onSave, onClose }) {
                 >
                   <option value="a_fazer">A fazer</option>
                   <option value="em_andamento">Em andamento</option>
-                  <option value="feito">Feito</option>
+                  <option value="feito">Finalizado</option>
                 </select>
               </div>
 
@@ -145,6 +170,54 @@ export default function TaskForm({ task, empresas, onSave, onClose }) {
                 onChange={e => set('descricao', e.target.value)}
                 rows={3}
               />
+            </div>
+
+            {/* ─── Recorrência ─── */}
+            <div className="recorrencia-box">
+              <label className="recorrencia-toggle">
+                <input
+                  type="checkbox"
+                  checked={form.recorrente}
+                  onChange={e => set('recorrente', e.target.checked)}
+                />
+                <span>🔁 Tarefa recorrente</span>
+              </label>
+
+              {form.recorrente && (
+                <>
+                  <div className="form-group">
+                    <label className="form-label">Repetir</label>
+                    <select
+                      className="form-select"
+                      value={form.recorrencia_tipo}
+                      onChange={e => set('recorrencia_tipo', e.target.value)}
+                    >
+                      <option value="diaria">Todo dia</option>
+                      <option value="dias_semana">Em dias específicos da semana</option>
+                      <option value="semanal">Toda semana (a cada 7 dias)</option>
+                    </select>
+                  </div>
+
+                  {form.recorrencia_tipo === 'dias_semana' && (
+                    <div className="weekday-chips">
+                      {WEEKDAYS.map(w => (
+                        <button
+                          type="button"
+                          key={w.value}
+                          className={`weekday-chip ${form.recorrencia_dias.includes(w.value) ? 'active' : ''}`}
+                          onClick={() => toggleDia(w.value)}
+                        >
+                          {w.short}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <p className="recorrencia-hint">
+                    Ao finalizar, a tarefa some do quadro e reaparece sozinha em "A fazer" no próximo dia previsto.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 

@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
 import GestorTarefas from './components/GestorTarefas'
 import { supabase } from './utils/supabaseClient'
+import { getTodayStr } from './utils/helpers'
 
 export default function App() {
   const [currentView, setCurrentView] = useState('dashboard')
@@ -23,9 +24,40 @@ export default function App() {
           .from('tarefas')
           .select('*, empresas(*)')
           .order('criado_em', { ascending: false }),
-        supabase.from('empresas').select('*').order('id')
+        supabase.from('empresas').select('*').order('id'),
       ])
-      setTasks(tarefasRes.data || [])
+
+      let tarefas = tarefasRes.data || []
+
+      // Desbloqueia tarefas recorrentes "agendadas" cujo dia previsto já chegou:
+      // elas voltam para "A fazer" no dia certo.
+      const hoje = getTodayStr()
+      const aDesbloquear = tarefas.filter(
+        t => t.recorrente && t.status === 'agendada' && t.proxima_data && t.proxima_data <= hoje
+      )
+
+      if (aDesbloquear.length) {
+        await Promise.all(
+          aDesbloquear.map(t =>
+            supabase
+              .from('tarefas')
+              .update({
+                status: 'a_fazer',
+                data_entrega: t.proxima_data,
+                proxima_data: null,
+                atualizado_em: new Date().toISOString(),
+              })
+              .eq('id', t.id)
+          )
+        )
+        const ref = await supabase
+          .from('tarefas')
+          .select('*, empresas(*)')
+          .order('criado_em', { ascending: false })
+        tarefas = ref.data || tarefas
+      }
+
+      setTasks(tarefas)
       setEmpresas(empresasRes.data || [])
     } catch (err) {
       console.error('Erro ao carregar dados:', err)

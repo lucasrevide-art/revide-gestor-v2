@@ -5,8 +5,14 @@ export function getGreeting() {
   return 'Boa noite'
 }
 
+// Usa componentes locais da data (evita o bug de fuso do toISOString,
+// que em America/Maceio (UTC-3) podia "pular" pro dia seguinte à noite).
 export function getTodayStr() {
-  return new Date().toISOString().split('T')[0]
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
 }
 
 export function formatDate(dateStr) {
@@ -45,7 +51,12 @@ export function getPriorityLabel(p) {
 }
 
 export function getStatusLabel(s) {
-  return { a_fazer: 'A fazer', em_andamento: 'Em andamento', feito: 'Feito' }[s] || s
+  return {
+    a_fazer: 'A fazer',
+    em_andamento: 'Em andamento',
+    feito: 'Finalizado',
+    agendada: 'Agendada',
+  }[s] || s
 }
 
 export function getPriorityColor(p) {
@@ -75,4 +86,68 @@ export function getCompanyTextColor(bgColor) {
   const b = parseInt(hex.substr(4, 2), 16)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
   return luminance > 0.5 ? '#000000' : '#ffffff'
+}
+
+/* ─── Kanban / Recorrência ─── */
+
+// Colunas do Kanban (na ordem). "feito" é exibido como "Finalizado".
+export const STATUS_COLUMNS = [
+  { value: 'a_fazer', label: 'A fazer' },
+  { value: 'em_andamento', label: 'Em andamento' },
+  { value: 'feito', label: 'Finalizado' },
+]
+
+// 0 = Domingo ... 6 = Sábado (compatível com Date.getDay())
+export const WEEKDAYS = [
+  { value: 0, short: 'Dom' },
+  { value: 1, short: 'Seg' },
+  { value: 2, short: 'Ter' },
+  { value: 3, short: 'Qua' },
+  { value: 4, short: 'Qui' },
+  { value: 5, short: 'Sex' },
+  { value: 6, short: 'Sáb' },
+]
+
+export function getRecorrenciaLabel(tipo, dias) {
+  if (tipo === 'diaria') return 'Diária'
+  if (tipo === 'semanal') return 'Semanal'
+  if (tipo === 'dias_semana') {
+    const map = WEEKDAYS.reduce((acc, w) => { acc[w.value] = w.short; return acc }, {})
+    const arr = (dias || []).slice().sort((a, b) => a - b).map(d => map[d]).filter(Boolean)
+    return arr.length ? arr.join(', ') : 'Dias da semana'
+  }
+  return ''
+}
+
+// Próxima ocorrência ESTRITAMENTE depois de `fromStr` (YYYY-MM-DD).
+export function getNextOccurrence(tipo, dias, fromStr) {
+  const toStr = (d) => {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+  const base = new Date((fromStr || getTodayStr()) + 'T00:00:00')
+
+  if (tipo === 'diaria') {
+    base.setDate(base.getDate() + 1)
+    return toStr(base)
+  }
+  if (tipo === 'semanal') {
+    base.setDate(base.getDate() + 7)
+    return toStr(base)
+  }
+  if (tipo === 'dias_semana') {
+    const set = (dias || []).map(Number)
+    if (set.length) {
+      for (let i = 1; i <= 7; i++) {
+        const d = new Date(base)
+        d.setDate(d.getDate() + i)
+        if (set.includes(d.getDay())) return toStr(d)
+      }
+    }
+  }
+  // fallback: amanhã
+  base.setDate(base.getDate() + 1)
+  return toStr(base)
 }
