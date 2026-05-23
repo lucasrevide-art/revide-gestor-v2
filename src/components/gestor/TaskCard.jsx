@@ -1,7 +1,13 @@
 import React from 'react'
-import { formatDate, getPriorityLabel, getStatusLabel, isOverdue, isDueToday } from '../../utils/helpers'
+import {
+  formatDate,
+  getPriorityLabel,
+  getRecorrenciaLabel,
+  isOverdue,
+  isDueToday,
+} from '../../utils/helpers'
 
-export default function TaskCard({ task, onEdit, onDelete, onStatusChange }) {
+export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onDragStart }) {
   const empresa = task.empresas
   const overdue = isOverdue(task.data_entrega) && task.status !== 'feito'
   const dueToday = isDueToday(task.data_entrega) && task.status !== 'feito'
@@ -17,13 +23,15 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange }) {
     <div
       className={`task-card ${task.status === 'feito' ? 'task-done' : ''} ${overdue ? 'task-overdue' : ''}`}
       style={{ borderLeftColor: companyColor }}
+      draggable
+      onDragStart={e => onDragStart && onDragStart(e, task)}
     >
       <div className="task-card-top">
         <div className="task-card-left">
           <button
             className={`task-status-btn status-${task.status}`}
             onClick={cycleStatus}
-            title="Clique para mudar status"
+            title="Clique para avançar o status"
           >
             {task.status === 'feito' ? '✓' : task.status === 'em_andamento' ? '◐' : '○'}
           </button>
@@ -69,9 +77,11 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange }) {
           {getPriorityLabel(task.prioridade)}
         </span>
 
-        <span className={`badge badge-${task.status}`}>
-          {getStatusLabel(task.status)}
-        </span>
+        {task.recorrente && (
+          <span className="task-recorrente" title="Tarefa recorrente">
+            🔁 {getRecorrenciaLabel(task.recorrencia_tipo, task.recorrencia_dias)}
+          </span>
+        )}
 
         {task.data_entrega && (
           <span className={`task-due ${overdue ? 'due-overdue' : dueToday ? 'due-today' : ''}`}>

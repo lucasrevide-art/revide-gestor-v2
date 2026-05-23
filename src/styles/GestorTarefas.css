@@ -1,5 +1,5 @@
 .gestor {
-  max-width: 900px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 32px 28px 60px;
 }
@@ -22,6 +22,12 @@
   font-size: 13px;
   color: var(--text-muted);
   margin-top: 3px;
+}
+
+.gestor-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .gestor-search {
@@ -95,42 +101,95 @@
   flex-shrink: 0;
 }
 
-/* ─── Task list ─── */
-.task-list {
+/* ─── Kanban ─── */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.kanban-col {
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 140px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.kanban-col.drag-over {
+  border-color: var(--blue);
+  background: var(--blue-dim);
+}
+
+.kanban-col-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.kanban-col-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-a_fazer { background: var(--text-muted); }
+.dot-em_andamento { background: var(--yellow); }
+.dot-feito { background: var(--green); }
+
+.kanban-col-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  flex: 1;
+}
+
+.kanban-col-count {
+  font-size: 11px;
+  background: var(--border);
+  color: var(--text-muted);
+  padding: 1px 8px;
+  border-radius: 20px;
+}
+
+.kanban-col-body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 40px;
+}
+
+.kanban-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 18px 8px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.kanban .task-card {
+  cursor: grab;
+}
+
+.kanban .task-card:active {
+  cursor: grabbing;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
   color: var(--text-soft);
-}
-
-.done-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
-  margin: 4px 0;
-}
-
-.done-divider::before,
-.done-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-.done-divider span {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
 }
 
 /* ─── Task card ─── */
@@ -140,7 +199,7 @@
   border-left: 3px solid var(--blue);
   border-radius: var(--radius);
   padding: 14px 16px;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 
 .task-card:hover {
@@ -148,7 +207,7 @@
 }
 
 .task-card.task-done {
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 .task-card.task-overdue {
@@ -283,6 +342,15 @@
   border: 1px solid transparent;
 }
 
+.task-recorrente {
+  font-size: 11px;
+  color: var(--purple);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 500;
+}
+
 .task-due {
   font-size: 11px;
   color: var(--text-muted);
@@ -291,9 +359,154 @@
 .due-overdue { color: var(--red); }
 .due-today { color: var(--yellow); }
 
+/* ─── Bloco de recorrência (TaskForm) ─── */
+.recorrencia-box {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #0a0a0a;
+}
+
+.recorrencia-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.recorrencia-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.weekday-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.weekday-chip {
+  min-width: 40px;
+  height: 34px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.weekday-chip:hover:not(.active) {
+  border-color: #444;
+  color: var(--text);
+}
+
+.weekday-chip.active {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.recorrencia-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Swatches de cor (EmpresaForm) ─── */
+.color-swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.12);
+}
+
+.color-swatch.active {
+  border-color: var(--text);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px currentColor;
+}
+
+.color-custom {
+  width: 36px;
+  height: 30px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #0a0a0a;
+  cursor: pointer;
+}
+
+.empresa-preview {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+/* ─── Fix: ícone do seletor de data ficava preto (invisível no tema escuro) ─── */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+/* ─── Responsivo ─── */
+@media (max-width: 760px) {
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
   .gestor {
     padding: 64px 16px 40px;
+  }
+
+  .gestor-header {
+    flex-direction: column;
+  }
+
+  .gestor-header-actions {
+    width: 100%;
+  }
+
+  .gestor-header-actions .btn {
+    flex: 1;
+    justify-content: center;
   }
 
   .filter-group {

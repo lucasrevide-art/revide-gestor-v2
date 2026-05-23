@@ -14,11 +14,7 @@ export default function Filters({ empresas, filters, onChange }) {
     { value: 'pode_esperar', label: 'Pode esperar', color: 'var(--text-muted)' },
   ]
 
-  const statuses = [
-    { value: 'a_fazer', label: 'A fazer' },
-    { value: 'em_andamento', label: 'Em andamento' },
-    { value: 'feito', label: 'Feito' },
-  ]
+  const hasFilter = filters.empresa || filters.prioridade
 
   return (
     <div className="filters">
@@ -68,25 +64,10 @@ export default function Filters({ empresas, filters, onChange }) {
         </div>
       </div>
 
-      <div className="filter-group">
-        <span className="filter-label">Status</span>
-        <div className="filter-chips">
-          {statuses.map(s => (
-            <button
-              key={s.value}
-              className={`filter-chip ${filters.status === s.value ? 'active' : ''}`}
-              onClick={() => toggle('status', s.value)}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {(filters.empresa || filters.prioridade || filters.status) && (
+      {hasFilter && (
         <button
           className="btn btn-ghost btn-sm"
-          onClick={() => onChange({ empresa: null, prioridade: null, status: null })}
+          onClick={() => onChange({ empresa: null, prioridade: null })}
         >
           × Limpar filtros
         </button>
