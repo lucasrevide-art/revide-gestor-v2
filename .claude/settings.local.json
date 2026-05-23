@@ -9,7 +9,11 @@
       "Bash(ls /usr/local/bin/ 2>/dev/null | head -20; ls /opt/homebrew/bin/ 2>/dev/null | grep -E \"node|npm\" | head -10; echo \"PATH=$PATH\")",
       "Bash(brew list *)",
       "Bash(/usr/local/bin/npm run *)",
-      "Bash(/usr/local/bin/npm install *)"
+      "Bash(/usr/local/bin/npm install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git -C \"/Users/lucascruz/Revide - Gestão\" remote get-url origin)"
     ]
   }
 }
