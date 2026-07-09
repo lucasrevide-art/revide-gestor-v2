@@ -1,7 +1,21 @@
 // Textos fixos do funil: hook, 3 sins, teaser, gate, apresentação do diagnóstico e CTAs (seções 7, 9, 10).
 
-// TODO: substituir pelo link real de agendamento (Cal.com, Calendly, WhatsApp etc.) antes de publicar.
-export const LINK_AGENDAMENTO = '#'
+export const LINK_AGENDAMENTO = 'https://calendly.com/lucasrevide/new-meeting'
+
+// Contatos diretos, exibidos só na tela final (CTAFinal), como alternativa
+// discreta ao botão de agendamento.
+export const CONTATOS = [
+  {
+    label: 'WhatsApp',
+    href: 'https://api.whatsapp.com/send/?phone=5582998434048&text&type=phone_number&app_absent=0&utm_source=ig',
+    icone: '💬',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/lucas.ocruzz/',
+    icone: '📷',
+  },
+]
 
 export const HOOK = {
   headline: 'As pessoas não se conectam apenas com o que uma marca faz. Elas se conectam com o que ela defende, com o que combate e com a transformação que representa.',

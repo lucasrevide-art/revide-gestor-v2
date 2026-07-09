@@ -1,4 +1,4 @@
-import { CTA_RAMIFICADO, LINK_AGENDAMENTO } from '../content/textosFixos'
+import { CTA_RAMIFICADO, LINK_AGENDAMENTO, CONTATOS } from '../content/textosFixos'
 
 export default function CTAFinal({ interesse, onVerDiagnostico }) {
   const conteudo = CTA_RAMIFICADO[interesse]
@@ -22,6 +22,21 @@ export default function CTAFinal({ interesse, onVerDiagnostico }) {
             {conteudo.botao}
           </button>
         )}
+      </div>
+
+      <div className="sim-contatos">
+        {CONTATOS.map(contato => (
+          <a
+            key={contato.label}
+            className="sim-contato-link"
+            href={contato.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span aria-hidden="true">{contato.icone}</span>
+            {contato.label}
+          </a>
+        ))}
       </div>
     </div>
   )
