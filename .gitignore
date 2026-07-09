@@ -1,6 +1,9 @@
 node_modules
 dist
 .env
+.env.*
 .env.local
+*.localRevidegestão
+!.env.example
 .DS_Store
 *.log
