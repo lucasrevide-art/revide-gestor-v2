@@ -3,9 +3,17 @@ import { NICHO_OPCOES, NIVEL_CONSCIENCIA_OPCOES, CONTEXTO } from '../content/per
 
 export default function Contexto({ onNext }) {
   const [nicho, setNicho] = useState('')
+  const [nichoOutro, setNichoOutro] = useState('')
   const [nivelConsciencia, setNivelConsciencia] = useState('')
 
-  const podeAvancar = nicho && nivelConsciencia
+  const ehOutro = nicho === 'Outro'
+  const nichoValido = ehOutro ? nichoOutro.trim().length > 0 : Boolean(nicho)
+  const podeAvancar = nichoValido && nivelConsciencia
+
+  function avancar() {
+    const nichoFinal = ehOutro ? nichoOutro.trim() : nicho
+    onNext({ nicho: nichoFinal, nivelConsciencia })
+  }
 
   return (
     <div className="sim-screen">
@@ -24,6 +32,18 @@ export default function Contexto({ onNext }) {
             <option key={opcao} value={opcao}>{opcao}</option>
           ))}
         </select>
+
+        {ehOutro && (
+          <input
+            className="form-input"
+            style={{ marginTop: 10 }}
+            type="text"
+            placeholder="Qual área?"
+            value={nichoOutro}
+            onChange={e => setNichoOutro(e.target.value)}
+            autoFocus
+          />
+        )}
       </div>
 
       <div className="sim-select-wrap">
@@ -47,7 +67,7 @@ export default function Contexto({ onNext }) {
         <button
           className="sim-btn sim-btn-primary"
           disabled={!podeAvancar}
-          onClick={() => onNext({ nicho, nivelConsciencia })}
+          onClick={avancar}
         >
           Continuar
         </button>

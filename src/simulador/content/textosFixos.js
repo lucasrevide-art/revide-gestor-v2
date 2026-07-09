@@ -4,20 +4,21 @@
 export const LINK_AGENDAMENTO = '#'
 
 export const HOOK = {
-  headline: 'O que trava sua marca pessoal não é falta de conteúdo. É a raiz que ainda não tomou forma.',
-  subheadline: 'Responda 12 perguntas e descubra, com precisão, qual é o seu gargalo real — antes de publicar mais um post.',
-  microcopy: 'Leva 2 minutos. Sem enrolação, sem pergunta genérica.',
+  headline: 'As pessoas não se conectam apenas com o que uma marca faz. Elas se conectam com o que ela defende, com o que combate e com a transformação que representa.',
+  subheadline: 'O que impede sua marca pessoal de se destacar vai além do conteúdo.',
+  microcopy: 'Em menos de 5 minutos, responda 12 perguntas e receba um diagnóstico claro, preciso e personalizado.',
   botao: 'Começar diagnóstico',
 }
 
 export const TRES_SINS = [
   'Pelas suas respostas, dá pra perceber um padrão: sua competência não é o problema. A forma como ela é percebida, é.',
-  'Enquanto esse padrão não muda, cada nova oportunidade continua dependendo de você provar do zero — em vez da sua reputação fazer esse trabalho sozinha.',
+  'Enquanto esse padrão não muda, cada nova oportunidade continua dependendo de você provar do zero, em vez da sua reputação fazer esse trabalho sozinha.',
   'Resolver isso significa parar de correr atrás de oportunidade e começar a ser procurado pelo motivo certo.',
 ]
 
 export const TEASER = {
-  intro: 'Baseado nas suas respostas, seu gargalo dominante é:',
+  introMetodo: 'No Método Cruz, toda marca pessoal se sustenta em 4 pilares: Clareza, Raiz, Universo e Zona de Conversão.',
+  intro: 'Pelas suas respostas, o pilar que mais precisa da sua atenção agora é:',
   pergunta: 'Quer entender exatamente por quê, e o que fazer a partir disso?',
   botao: 'Quero meu diagnóstico completo',
 }
@@ -30,14 +31,12 @@ export const GATE = {
 
 export const APRESENTACAO_DIAGNOSTICO = {
   texto:
-    'O diagnóstico que você acabou de receber é um raio-x rápido. O **Diagnóstico Estratégico Cruz** vai além — é uma análise completa da sua marca, feita pra te dar direção real, não só um retrato.',
+    'O diagnóstico que você acabou de receber é um raio X rápido. O **Diagnóstico Estratégico Cruz** vai além, é uma análise completa da sua marca, feita pra te dar direção real, não só um retrato.',
   entregaveis: [
-    'Análise do seu perfil, bio e primeira impressão',
-    'Análise de posicionamento — como sua marca é percebida hoje',
-    'Análise de conteúdo — o que constrói percepção e o que só ocupa espaço',
-    'Análise da sua oferta — se está clara o suficiente pra vender sozinha',
-    'Leitura de concorrentes — onde existe espaço pra você se diferenciar',
-    'Um plano de ação: o que ajustar primeiro, o que ajustar em 7 dias, o que ajustar em 30 dias',
+    'Mapas de conteúdo com sua narrativa e cliente ideal. Não só uma análise do que você já publica, mas um direcionamento de como usar sua narrativa pra guiar o que vem a seguir.',
+    'Análise de posicionamento e percepção de valor. Quando seu posicionamento, visual ou estratégico, não está definido, seu preço não faz sentido pra ninguém: se estiver alto, as pessoas não compram porque não enxergam o valor; se estiver baixo, não compram porque não enxergam solução. Analisamos onde está esse descompasso.',
+    'Mapeamento de concorrentes. Os que mais podem te impactar, na sua região ou no seu nicho online, o que eles fazem de certo, e a brecha que você pode ocupar pra se diferenciar.',
+    'Plano de ação teórico e prático. Você sai sabendo exatamente o que ajustar nos próximos 7 dias, e a direção completa pros próximos 30.',
   ],
   fechamento: 'Não é um mapeamento genérico. É a raiz do que você acabou de ver aqui, com profundidade.',
 }
@@ -58,12 +57,12 @@ export const CTA_RAMIFICADO = {
     mostrarAgendar: true,
   },
   talvez: {
-    texto: 'Faz sentido ter dúvida antes de decidir. Por isso a conversa de 8 minutos existe: não é uma venda, é pra você ver na prática se isso resolve o que você está sentindo — sem compromisso nenhum depois.',
+    texto: 'Faz sentido ter dúvida antes de decidir. Por isso a conversa de 8 minutos existe: não é uma venda, é pra você ver na prática se isso resolve o que você está sentindo, sem compromisso nenhum depois.',
     botao: 'Quero entender melhor',
     mostrarAgendar: true,
   },
   nao_e_momento: {
-    texto: 'Sem problema. Seu diagnóstico já é seu — fica disponível quando fizer sentido. Se um dia quiser trocar uma ideia sobre isso, a porta continua aberta.',
+    texto: 'Sem problema. Seu diagnóstico já é seu, fica disponível quando fizer sentido. Se um dia quiser trocar uma ideia sobre isso, a porta continua aberta.',
     botao: 'Ver meu diagnóstico novamente',
     mostrarAgendar: false,
   },

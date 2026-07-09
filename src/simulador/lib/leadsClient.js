@@ -24,8 +24,6 @@ export async function criarLead({
       score_zona_conversao: pontuacao.scoreZonaConversao,
       score_comunidade: pontuacao.scoreComunidade,
       gargalo_dominante: pontuacao.gargaloDominante,
-      gargalo_secundario: pontuacao.gargaloSecundario,
-      estagio_comunidade: pontuacao.estagioComunidade,
       nome,
       email,
       whatsapp,
