@@ -9,9 +9,12 @@ export async function criarLead({
   email,
   whatsapp,
 }) {
-  const { data, error } = await supabase
+  const id = crypto.randomUUID()
+
+  const { error } = await supabase
     .from('leads')
     .insert({
+      id,
       nicho,
       nivel_consciencia: nivelConsciencia,
       respostas,
@@ -29,23 +32,19 @@ export async function criarLead({
       gate_preenchido_em: new Date().toISOString(),
       etapa_atual: 'resultado',
     })
-    .select('id')
-    .single()
 
   if (error) throw error
-  return data.id
+  return id
 }
 
+// A anon key não tem UPDATE direto na tabela `leads` (ver migration
+// 20260709010000_enable_rls_leads.sql) — essa gravação passa pela Edge
+// Function `registrar-interesse`, que roda com a service_role key e só
+// aceita atualizar estes 4 campos, de um lead por vez.
 export async function registrarInteresse(leadId, { interesseDiagnostico, querCall }) {
-  const { error } = await supabase
-    .from('leads')
-    .update({
-      interesse_diagnostico: interesseDiagnostico,
-      quer_call: querCall,
-      etapa_atual: 'cta_final',
-      concluido: true,
-    })
-    .eq('id', leadId)
+  const { error } = await supabase.functions.invoke('registrar-interesse', {
+    body: { leadId, interesseDiagnostico, querCall },
+  })
 
   if (error) throw error
 }
