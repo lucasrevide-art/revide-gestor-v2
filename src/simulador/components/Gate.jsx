@@ -15,11 +15,12 @@ export default function Gate({ onSubmit, submitting }) {
   }
 
   return (
-    <form className="sim-screen" onSubmit={handleSubmit}>
-      <h2 className="sim-headline" style={{ fontSize: 22 }}>{GATE.titulo}</h2>
+    <form className="sim-screen" onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
+      <span className="sim-eyebrow">Último passo</span>
+      <h2 className="sim-headline" style={{ fontSize: 26 }}>{GATE.titulo}</h2>
       <p className="sim-subheadline">{GATE.subtitulo}</p>
 
-      <div className="sim-fields">
+      <div className="sim-fields" style={{ textAlign: 'left' }}>
         <div className="form-group">
           <label className="form-label" htmlFor="sim-nome">Nome</label>
           <input

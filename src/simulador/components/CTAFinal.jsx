@@ -4,21 +4,23 @@ export default function CTAFinal({ interesse, onVerDiagnostico }) {
   const conteudo = CTA_RAMIFICADO[interesse]
 
   return (
-    <div className="sim-screen">
-      <p className="sim-body">{conteudo.texto}</p>
+    <div className="sim-screen" style={{ alignItems: 'center', textAlign: 'center', justifyContent: 'center', minHeight: '70vh' }}>
+      <span className="sim-eyebrow">Próximo passo</span>
+      <p className="sim-headline" style={{ fontSize: 24, fontWeight: 400, maxWidth: 440 }}>{conteudo.texto}</p>
 
-      <div className="sim-actions">
+      <div className="sim-actions" style={{ alignItems: 'center', width: '100%' }}>
         {conteudo.mostrarAgendar ? (
           <a
             className="sim-btn sim-btn-primary"
             href={LINK_AGENDAMENTO}
             target="_blank"
             rel="noopener noreferrer"
+            style={{ width: 'auto', padding: '17px 34px' }}
           >
             {conteudo.botao}
           </a>
         ) : (
-          <button className="sim-btn sim-btn-ghost" onClick={onVerDiagnostico}>
+          <button className="sim-btn sim-btn-ghost" onClick={onVerDiagnostico} style={{ width: 'auto', padding: '17px 34px' }}>
             {conteudo.botao}
           </button>
         )}

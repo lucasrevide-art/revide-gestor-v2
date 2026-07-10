@@ -3,10 +3,12 @@ import { RichText } from '../lib/richText'
 
 export default function ApresentacaoDiagnostico({ onResponderInteresse }) {
   return (
-    <div className="sim-screen">
+    <div className="sim-screen" style={{ textAlign: 'center' }}>
+      <span className="sim-eyebrow">Diagnóstico Estratégico Cruz</span>
+
       <p className="sim-body"><RichText text={APRESENTACAO_DIAGNOSTICO.texto} /></p>
 
-      <ul className="sim-list">
+      <ul className="sim-list" style={{ textAlign: 'left' }}>
         {APRESENTACAO_DIAGNOSTICO.entregaveis.map((item, i) => (
           <li key={i}>{item}</li>
         ))}
@@ -14,8 +16,8 @@ export default function ApresentacaoDiagnostico({ onResponderInteresse }) {
 
       <p className="sim-body">{APRESENTACAO_DIAGNOSTICO.fechamento}</p>
 
-      <div className="sim-block">
-        <p className="sim-question">{PERGUNTA_INTERESSE.pergunta}</p>
+      <div className="sim-block" style={{ borderBottom: 'none', textAlign: 'left' }}>
+        <p className="sim-question" style={{ textAlign: 'center' }}>{PERGUNTA_INTERESSE.pergunta}</p>
         <div className="sim-options">
           {PERGUNTA_INTERESSE.opcoes.map(opcao => (
             <button

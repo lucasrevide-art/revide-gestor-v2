@@ -54,7 +54,7 @@ export default function Contexto({ onNext }) {
               key={opcao.valor}
               type="button"
               className="sim-option"
-              style={nivelConsciencia === opcao.valor ? { borderColor: 'var(--blue)', background: 'var(--card-hover)' } : undefined}
+              style={nivelConsciencia === opcao.valor ? { borderColor: '#d4d4d4', background: 'linear-gradient(135deg,#e8e8e8,#a8a8a8)', color: '#0a0a0a' } : undefined}
               onClick={() => setNivelConsciencia(opcao.valor)}
             >
               {opcao.label}
