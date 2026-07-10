@@ -8,6 +8,7 @@ export async function criarLead({
   nome,
   email,
   whatsapp,
+  instagram,
 }) {
   const id = crypto.randomUUID()
 
@@ -27,6 +28,7 @@ export async function criarLead({
       nome,
       email,
       whatsapp,
+      instagram: instagram || null,
       gate_preenchido_em: new Date().toISOString(),
       etapa_atual: 'resultado',
     })

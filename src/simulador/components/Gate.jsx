@@ -5,13 +5,14 @@ export default function Gate({ onSubmit, submitting }) {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [whatsapp, setWhatsapp] = useState('')
+  const [instagram, setInstagram] = useState('')
 
   const podeEnviar = nome.trim() && email.trim() && whatsapp.trim()
 
   function handleSubmit(e) {
     e.preventDefault()
     if (!podeEnviar || submitting) return
-    onSubmit({ nome: nome.trim(), email: email.trim(), whatsapp: whatsapp.trim() })
+    onSubmit({ nome: nome.trim(), email: email.trim(), whatsapp: whatsapp.trim(), instagram: instagram.trim() })
   }
 
   return (
@@ -56,6 +57,18 @@ export default function Gate({ onSubmit, submitting }) {
             autoComplete="tel"
             placeholder="(00) 00000-0000"
             required
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="sim-instagram">Instagram</label>
+          <input
+            id="sim-instagram"
+            className="form-input"
+            type="text"
+            value={instagram}
+            onChange={e => setInstagram(e.target.value)}
+            autoComplete="off"
+            placeholder="@seu.usuario"
           />
         </div>
       </div>

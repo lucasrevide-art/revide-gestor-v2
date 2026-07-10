@@ -62,7 +62,7 @@ export default function Simulador() {
     }
   }
 
-  async function handleGate({ nome: nomeInformado, email, whatsapp }) {
+  async function handleGate({ nome: nomeInformado, email, whatsapp, instagram }) {
     setSubmitting(true)
     setErro(null)
     try {
@@ -74,6 +74,7 @@ export default function Simulador() {
         nome: nomeInformado,
         email,
         whatsapp,
+        instagram,
       })
       setLeadId(id)
       setNome(nomeInformado)
