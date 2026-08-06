@@ -1,6 +1,6 @@
 # Revide — Gestão de Tarefas
 
-Sistema pessoal de gestão de tarefas com Dashboard, integração Supabase e mensagens motivacionais via Claude API.
+Dashboard pessoal de tarefas em formato Kanban: crie, edite e arraste suas atividades entre colunas até "Finalizado". Tudo roda localmente e os dados ficam salvos no navegador (localStorage) — sem conta, sem banco de dados para configurar.
 
 ## Setup
 
@@ -9,23 +9,19 @@ Sistema pessoal de gestão de tarefas com Dashboard, integração Supabase e men
 npm install
 ```
 
-### 2. Configurar variáveis de ambiente
-Copie `.env.example` para `.env` e preencha a sua chave Claude:
+### 2. (Opcional) Mensagem motivacional com IA
+A mensagem do dia no Dashboard usa a Claude API. Isso é totalmente opcional — sem chave configurada, aparece uma frase padrão no lugar.
+
 ```bash
 cp .env.example .env
 ```
 
-Edite `.env`:
+Edite `.env` e adicione sua chave:
 ```
-VITE_SUPABASE_URL=https://ogxvuxbojwrfzjltofvi.supabase.co
-VITE_SUPABASE_ANON_KEY=sb_publishable_xc75e6oX-eJxcZ1mhNjyaQ_MNdpModb
 ANTHROPIC_API_KEY=sk-ant-SUA_CHAVE_AQUI
 ```
 
-### 3. Criar tabelas no Supabase
-Acesse o [Supabase Dashboard](https://app.supabase.com) → SQL Editor → cole o conteúdo de `supabase/schema.sql` e execute.
-
-### 4. Rodar localmente
+### 3. Rodar localmente
 ```bash
 npm run dev
 ```
@@ -34,27 +30,17 @@ Acesse: http://localhost:5173
 
 ---
 
-## Deploy (Vercel)
-
-1. Faça push para GitHub
-2. Importe o repositório no [Vercel](https://vercel.com)
-3. Adicione as variáveis de ambiente no painel Vercel:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-   - `ANTHROPIC_API_KEY`
-4. Deploy automático!
-
----
-
 ## Funcionalidades
 
-- **Dashboard (Mission Control)**: saudação dinâmica, mensagem motivacional IA, alertas de prazo, objetivos do dia, lembretes com timer, progresso por empresa
-- **Gestor de Tarefas**: CRUD completo, filtros por empresa/prioridade/status, busca, ciclo de status com um clique
-- **Sidebar**: navegação entre seções, logo RV clicável
+- **Gestor de Tarefas (Kanban)**: colunas "A fazer", "Em andamento" e "Finalizado" — arraste os cards entre elas. CRUD completo (criar, editar, excluir), filtros por empresa/prioridade, busca, tarefas recorrentes (diárias, semanais, dias específicos da semana)
+- **Dashboard (Mission Control)**: saudação dinâmica, mensagem motivacional (IA opcional), alertas de prazo, objetivos do dia, lembretes com timer, progresso por empresa
+- **Armazenamento local**: todos os dados (tarefas, empresas, lembretes, objetivos) ficam salvos no `localStorage` do navegador — nada sai da sua máquina
 - **Mobile**: responsivo com menu hambúrguer
 
 ## Stack
 - React 18 + Vite
-- Supabase (PostgreSQL)
-- Claude API (Haiku) — cache diário no localStorage
-- Express (proxy local para Claude API)
+- localStorage (sem backend/banco de dados)
+- Claude API (Haiku, opcional) — proxy Express local (`server.js`) + cache diário no localStorage
+
+## Observação
+Como os dados ficam no `localStorage` do navegador, eles são por navegador/dispositivo (não sincronizam entre computadores) e podem ser perdidos se você limpar os dados do site. Para uso multi-dispositivo seria necessário voltar a um backend compartilhado — mas para uso pessoal em uma máquina isso mantém tudo simples, sem contas para gerenciar.

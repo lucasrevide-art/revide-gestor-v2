@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { supabase } from '../utils/supabaseClient'
+import { db } from '../utils/localDb'
 import TaskCard from './gestor/TaskCard'
 import TaskForm from './gestor/TaskForm'
 import EmpresaForm from './gestor/EmpresaForm'
@@ -41,25 +41,19 @@ export default function GestorTarefas({ tasks, empresas, onTasksChange }) {
 
   // Muda o status de uma tarefa. Se uma tarefa RECORRENTE for finalizada,
   // ela some do quadro e é reagendada para o próximo dia previsto.
-  async function applyStatus(task, newStatus) {
+  function applyStatus(task, newStatus) {
     if (newStatus === task.status) return
 
     if (newStatus === 'feito' && task.recorrente) {
       const next = getNextOccurrence(task.recorrencia_tipo, task.recorrencia_dias, getTodayStr())
-      await supabase
-        .from('tarefas')
-        .update({ status: 'agendada', proxima_data: next, atualizado_em: new Date().toISOString() })
-        .eq('id', task.id)
+      db.tarefas.update(task.id, { status: 'agendada', proxima_data: next, atualizado_em: new Date().toISOString() })
     } else {
-      await supabase
-        .from('tarefas')
-        .update({ status: newStatus, atualizado_em: new Date().toISOString() })
-        .eq('id', task.id)
+      db.tarefas.update(task.id, { status: newStatus, atualizado_em: new Date().toISOString() })
     }
     onTasksChange()
   }
 
-  async function handleSave(formData) {
+  function handleSave(formData) {
     let payload = { ...formData }
 
     // Se a pessoa marcar recorrente e já salvar como "Finalizado", agenda a próxima
@@ -72,26 +66,23 @@ export default function GestorTarefas({ tasks, empresas, onTasksChange }) {
     }
 
     if (editingTask) {
-      await supabase
-        .from('tarefas')
-        .update({ ...payload, atualizado_em: new Date().toISOString() })
-        .eq('id', editingTask.id)
+      db.tarefas.update(editingTask.id, { ...payload, atualizado_em: new Date().toISOString() })
     } else {
-      await supabase.from('tarefas').insert(payload)
+      db.tarefas.insert(payload)
     }
     setShowForm(false)
     setEditingTask(null)
     onTasksChange()
   }
 
-  async function handleAddEmpresa({ nome, cor }) {
-    await supabase.from('empresas').insert({ nome, cor })
+  function handleAddEmpresa({ nome, cor }) {
+    db.empresas.insert({ nome, cor })
     setShowEmpresa(false)
     onTasksChange()
   }
 
-  async function handleDelete(task) {
-    await supabase.from('tarefas').delete().eq('id', task.id)
+  function handleDelete(task) {
+    db.tarefas.remove(task.id)
     setDeleteConfirm(null)
     onTasksChange()
   }

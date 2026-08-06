@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { supabase } from '../../utils/supabaseClient'
+import { db } from '../../utils/localDb'
 import { msToTime, formatMinutes } from '../../utils/helpers'
 
 const TIME_OPTIONS = [
@@ -24,35 +24,28 @@ export default function QuickReminders() {
     return () => clearInterval(interval)
   }, [])
 
-  async function loadReminders() {
-    const { data } = await supabase
-      .from('lembretes')
-      .select('*')
-      .eq('disparado', false)
-      .order('fire_at')
-    setReminders(data || [])
+  function loadReminders() {
+    setReminders(db.lembretes.listPending())
   }
 
-  async function addReminder() {
+  function addReminder() {
     if (!newTitle.trim()) return
     const fireAt = new Date(Date.now() + newTime * 60 * 1000).toISOString()
 
-    const { data } = await supabase.from('lembretes').insert({
+    const row = db.lembretes.insert({
       titulo: newTitle.trim(),
       tempo_minutos: newTime,
       fire_at: fireAt,
       disparado: false
-    }).select().single()
+    })
 
-    if (data) {
-      setReminders(prev => [...prev, data].sort((a, b) => new Date(a.fire_at) - new Date(b.fire_at)))
-    }
+    setReminders(prev => [...prev, row].sort((a, b) => new Date(a.fire_at) - new Date(b.fire_at)))
     setNewTitle('')
     setShowForm(false)
   }
 
-  async function dismissReminder(id) {
-    await supabase.from('lembretes').update({ disparado: true }).eq('id', id)
+  function dismissReminder(id) {
+    db.lembretes.update(id, { disparado: true })
     setReminders(prev => prev.filter(r => r.id !== id))
   }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
 import GestorTarefas from './components/GestorTarefas'
-import { supabase } from './utils/supabaseClient'
+import { db } from './utils/localDb'
 import { getTodayStr } from './utils/helpers'
 
 export default function App() {
@@ -16,18 +16,11 @@ export default function App() {
     loadData()
   }, [])
 
-  async function loadData() {
+  function loadData() {
     setLoading(true)
     try {
-      const [tarefasRes, empresasRes] = await Promise.all([
-        supabase
-          .from('tarefas')
-          .select('*, empresas(*)')
-          .order('criado_em', { ascending: false }),
-        supabase.from('empresas').select('*').order('id'),
-      ])
-
-      let tarefas = tarefasRes.data || []
+      let tarefas = db.tarefas.list()
+      const empresas = db.empresas.list()
 
       // Desbloqueia tarefas recorrentes "agendadas" cujo dia previsto já chegou:
       // elas voltam para "A fazer" no dia certo.
@@ -37,28 +30,19 @@ export default function App() {
       )
 
       if (aDesbloquear.length) {
-        await Promise.all(
-          aDesbloquear.map(t =>
-            supabase
-              .from('tarefas')
-              .update({
-                status: 'a_fazer',
-                data_entrega: t.proxima_data,
-                proxima_data: null,
-                atualizado_em: new Date().toISOString(),
-              })
-              .eq('id', t.id)
-          )
+        aDesbloquear.forEach(t =>
+          db.tarefas.update(t.id, {
+            status: 'a_fazer',
+            data_entrega: t.proxima_data,
+            proxima_data: null,
+            atualizado_em: new Date().toISOString(),
+          })
         )
-        const ref = await supabase
-          .from('tarefas')
-          .select('*, empresas(*)')
-          .order('criado_em', { ascending: false })
-        tarefas = ref.data || tarefas
+        tarefas = db.tarefas.list()
       }
 
       setTasks(tarefas)
-      setEmpresas(empresasRes.data || [])
+      setEmpresas(empresas)
     } catch (err) {
       console.error('Erro ao carregar dados:', err)
     } finally {

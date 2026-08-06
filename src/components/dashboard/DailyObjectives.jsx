@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../utils/supabaseClient'
+import { db } from '../../utils/localDb'
 import { getTodayStr } from '../../utils/helpers'
 
 export default function DailyObjectives({ tasks, onObjectivesChange }) {
@@ -14,31 +14,24 @@ export default function DailyObjectives({ tasks, onObjectivesChange }) {
     loadObjectives()
   }, [])
 
-  async function loadObjectives() {
-    const { data } = await supabase
-      .from('objetivos_dia')
-      .select('*, tarefas(*)')
-      .eq('data', today)
-      .order('ordem')
-    setObjectives(data || [])
+  function loadObjectives() {
+    const data = db.objetivos.listByDate(today)
+    setObjectives(data)
     setLoading(false)
-    onObjectivesChange && onObjectivesChange((data || []).map(o => o.tarefas?.titulo).filter(Boolean))
+    onObjectivesChange && onObjectivesChange(data.map(o => o.tarefas?.titulo).filter(Boolean))
   }
 
-  async function toggleComplete(obj) {
-    await supabase
-      .from('objetivos_dia')
-      .update({ completo: !obj.completo })
-      .eq('id', obj.id)
+  function toggleComplete(obj) {
+    db.objetivos.update(obj.id, { completo: !obj.completo })
     loadObjectives()
   }
 
-  async function addObjective(task) {
+  function addObjective(task) {
     if (objectives.length >= 4) return
     const alreadyAdded = objectives.find(o => o.tarefa_id === task.id)
     if (alreadyAdded) return
 
-    await supabase.from('objetivos_dia').insert({
+    db.objetivos.insert({
       data: today,
       tarefa_id: task.id,
       ordem: objectives.length + 1,
@@ -48,8 +41,8 @@ export default function DailyObjectives({ tasks, onObjectivesChange }) {
     loadObjectives()
   }
 
-  async function removeObjective(obj) {
-    await supabase.from('objetivos_dia').delete().eq('id', obj.id)
+  function removeObjective(obj) {
+    db.objetivos.remove(obj.id)
     loadObjectives()
   }
 
