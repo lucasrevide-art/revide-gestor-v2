@@ -10,7 +10,7 @@ export default function Filters({ empresas, filters, onChange }) {
 
   const prioridades = [
     { value: 'urgente', label: 'Urgente', color: 'var(--red)' },
-    { value: 'normal', label: 'Normal', color: 'var(--blue)' },
+    { value: 'normal', label: 'Normal', color: 'var(--accent)' },
     { value: 'pode_esperar', label: 'Pode esperar', color: 'var(--text-muted)' },
   ]
 

@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard'
 import GestorTarefas from './components/GestorTarefas'
 import { db } from './utils/localDb'
 import { getTodayStr } from './utils/helpers'
+import { getTheme, applyTheme } from './utils/theme'
 
 export default function App() {
   const [currentView, setCurrentView] = useState('dashboard')
@@ -11,10 +12,17 @@ export default function App() {
   const [empresas, setEmpresas] = useState([])
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [theme, setTheme] = useState(getTheme)
 
   useEffect(() => {
     loadData()
   }, [])
+
+  function toggleTheme() {
+    const next = theme === 'light' ? 'dark' : 'light'
+    applyTheme(next)
+    setTheme(next)
+  }
 
   function loadData() {
     setLoading(true)
@@ -78,6 +86,8 @@ export default function App() {
         currentView={currentView}
         onNavigate={(view) => { setCurrentView(view); closeSidebar() }}
         isOpen={sidebarOpen}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <main className="main-content">

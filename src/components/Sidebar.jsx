@@ -13,7 +13,7 @@ const NAV_COMING = [
   { id: 'criacao', icon: '🎨', label: 'Criação' },
 ]
 
-export default function Sidebar({ currentView, onNavigate, isOpen }) {
+export default function Sidebar({ currentView, onNavigate, isOpen, theme, onToggleTheme }) {
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
@@ -26,6 +26,15 @@ export default function Sidebar({ currentView, onNavigate, isOpen }) {
       </div>
 
       <nav className="sidebar-nav">
+        <button
+          className="theme-toggle"
+          onClick={onToggleTheme}
+          title={theme === 'light' ? 'Mudar para tema escuro' : 'Mudar para tema claro'}
+        >
+          <span className="theme-toggle-icon">{theme === 'light' ? '🌙' : '☀️'}</span>
+          <span>{theme === 'light' ? 'Tema escuro' : 'Tema claro'}</span>
+        </button>
+
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
