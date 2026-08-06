@@ -78,7 +78,7 @@
   align-items: center;
   gap: 6px;
   padding: 5px 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-muted);
@@ -159,7 +159,7 @@
   background: var(--border);
   color: var(--text-muted);
   padding: 1px 8px;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
 }
 
 .kanban-col-body {
@@ -336,11 +336,21 @@
 .task-company-badge {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
-  border-radius: 20px;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
   font-size: 11px;
   font-weight: 500;
   border: 1px solid transparent;
+}
+
+.task-company-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
 }
 
 .task-recorrente {
